@@ -30,4 +30,6 @@ export const submissionSchema = z.object({
   infoObligation: z.boolean().refine((v) => v === true, "Wymagane potwierdzenie obowiązku informacyjnego"),
 });
 
-export type SubmissionInput = z.infer<typeof submissionSchema>;
+export type SubmissionInput = z.input<typeof submissionSchema>;
+export type SubmissionParsed = z.infer<typeof submissionSchema>;
+
