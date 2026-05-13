@@ -14,7 +14,10 @@ export async function GET(
     const doc = await buildPdfDocument(id);
     const buffer = await renderToBuffer(doc);
 
-    return new NextResponse(buffer, {
+    // ✅ TS-friendly: Buffer -> Uint8Array
+    const body = new Uint8Array(buffer);
+
+    return new NextResponse(body, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="zgloszenie-${id}.pdf"`,
