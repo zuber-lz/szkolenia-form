@@ -1,21 +1,23 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { renderToBuffer } from "@react-pdf/renderer";
 import { buildPdfDocument } from "@/lib/pdf";
 
 export const runtime = "nodejs";
 
 export async function GET(
-  _: Request,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+
   try {
-    const doc = await buildPdfDocument(params.id);
+    const doc = await buildPdfDocument(id);
     const buffer = await renderToBuffer(doc);
 
     return new NextResponse(buffer, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="zgloszenie-${params.id}.pdf"`,
+        "Content-Disposition": `attachment; filename="zgloszenie-${id}.pdf"`,
       },
     });
   } catch {
