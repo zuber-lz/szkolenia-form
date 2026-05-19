@@ -32,19 +32,24 @@ export async function POST(req: Request) {
       rodoConsent: data.rodoConsent,
       infoObligation: data.infoObligation,
       participants: {
-        create: data.participants.map((p) => ({
-          fullName: p.fullName,
-          pesel: p.pesel || null,
-          documentId: p.documentId || null,
-          trainingScope: p.trainingScope || null,
-          group: (p.group as any) || null,
-          mode: (p.mode as any) || null,
-          points: p.points || null,
-        })),
+        create: data.participants.flatMap((p) =>
+          p.scopes.map((s) => ({
+            fullName: p.fullName,
+            pesel: p.pesel || null,
+            documentId: p.documentId || null,
+
+            trainingScope: s.trainingScope || null,
+            group: s.group || null,
+
+            // usuwamy mode (już nie istnieje)
+            mode: null,
+
+            points: [...(s.pointsE || []), ...(s.pointsD || [])].join(", ") || null,
+          }))
+        ),
       },
-    },
-    select: { id: true },
-  });
+      select: { id: true },
+    });
 
   return NextResponse.json({ id: created.id }, { status: 201 });
 }
