@@ -292,7 +292,7 @@ function ParticipantScopes({ idx, form }: { idx: number; form: any }) {
       </div>
 
       {fields.map((f, sIdx) => {
-        const currentGroup = (scopes?.[sIdx]?.group ?? f.group) as "G1" | "G2" | "G3";
+        const currentGroup = (scopes?.[sIdx]?.group ?? "G1") as "G1" | "G2" | "G3";
         const count = POINTS_COUNT[currentGroup];
         const options = Array.from({ length: count }, (_, i) => String(i + 1));
 

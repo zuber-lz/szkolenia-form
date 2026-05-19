@@ -31,6 +31,7 @@ export async function POST(req: Request) {
       heardFrom: data.heardFrom || "",
       rodoConsent: data.rodoConsent,
       infoObligation: data.infoObligation,
+
       participants: {
         create: data.participants.flatMap((p) =>
           p.scopes.map((s) => ({
@@ -40,16 +41,17 @@ export async function POST(req: Request) {
 
             trainingScope: s.trainingScope || null,
             group: s.group || null,
-
-            // usuwamy mode (już nie istnieje)
             mode: null,
 
-            points: [...(s.pointsE || []), ...(s.pointsD || [])].join(", ") || null,
+            points:
+              [...(s.pointsE || []), ...(s.pointsD || [])].join(", ") || null,
           }))
         ),
       },
-      select: { id: true },}
-    });
+    },
 
+    select: { id: true },
+  });
+  ``
   return NextResponse.json({ id: created.id }, { status: 201 });
 }
