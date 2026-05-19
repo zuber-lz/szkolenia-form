@@ -48,7 +48,7 @@ export async function POST(req: Request) {
           }))
         ),
       },
-      select: { id: true },
+      select: { id: true },}
     });
 
   return NextResponse.json({ id: created.id }, { status: 201 });
